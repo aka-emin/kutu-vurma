@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Ortadaki_kutular
+  - GameKontrol
+  - Bullet
+  - Oyuncu_2_Kule
+  - Oyuncu_1_Kule
+  - FxTemporaire
+  - oyuncuNoktasi1
+  - oyuncuNoktasi2
+  - oyuncubekleniyor
+  - Oyuncu1_isim
+  - Oyuncu2_isim
+  - powerbar
+  - oyuncu1
+  - oyuncu2
+  - can
+  - engel
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  m_RenderingLayers:
+  - Default
