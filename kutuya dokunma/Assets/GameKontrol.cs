@@ -1,23 +1,28 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameKontrol : MonoBehaviour
 {
+    [Header("OYUNCU SAÐLIK AYARLARI")]
+    public Image Oyuncu_1_saglik_Bar;
+    float Oyuncu_1_saglik = 100;
+    public Image Oyuncu_2_saglik_Bar;
+    float Oyuncu_2_saglik = 100;
+    PhotonView pw;
 
-    [Header("TOP AYARLARI VE ÝÞLEMLERÝ")]
-    public GameObject TopYokOlmaEfekt;
-    public AudioSource YokOlmaSesi;
+    bool basladikmi;
+    int limit;
+    float beklemesuresi;
+    int olusturmaSayisi;
+    public GameObject[] noktalar;
 
-    [Header("ORTADAKÝ KUTULARIN AYARLARI VE ÝÞLEMLERÝ")]
-    public GameObject KutuYokOlmaEfekt;
-    public AudioSource KutuYokOlmaSesi;
-
-    public Image saglikbar1;
-    public Image saglikbar2;
-
-    void Start()
+    private void Start()
     {
-
+        pw = GetComponent<PhotonView>();
+        basladikmi = false;
+        limit = 4;
+        beklemesuresi = 5f;
     }
 
     // Update is called once per frame
@@ -25,49 +30,89 @@ public class GameKontrol : MonoBehaviour
     {
 
     }
-    public void darbeAl(int key,float darbeguc)
-    {
-        switch(key)
-        {
-            case 0:
-                saglikbar1.fillAmount = saglikbar1.fillAmount - darbeguc;
-                break;
-
-                case 1:
-                saglikbar2.fillAmount = saglikbar2.fillAmount - darbeguc;
-                break;
-        }
-    }
-    public void CanAl(int key, float darbeguc)
-    {
-        switch (key)
-        {
-            case 0:
-                saglikbar1.fillAmount = saglikbar1.fillAmount + darbeguc;
-                break;
-            case 1:
-                saglikbar2.fillAmount = saglikbar2.fillAmount + darbeguc;
-                break;
-        }
-    }
-    public void Ses_ve_Efekt_Olustur(int kriter, GameObject objetransformu)
+    [PunRPC]
+    public void Darbe_vur(int kriter, float darbegucu)
     {
 
         switch (kriter)
         {
 
             case 1:
-                Instantiate(TopYokOlmaEfekt, objetransformu.gameObject.transform.position, objetransformu.gameObject.transform.rotation);
-                YokOlmaSesi.Play();
+                if (PhotonNetwork.IsMasterClient)
+                    Oyuncu_1_saglik -= darbegucu;
+
+                Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
+
+                if (Oyuncu_1_saglik <= 0)
+                {
+
+                    Debug.Log("Oyuncu 1 yenildi");
+
+                }
+
                 break;
             case 2:
-                Instantiate(KutuYokOlmaEfekt, objetransformu.gameObject.transform.position, objetransformu.gameObject.transform.rotation);
-                KutuYokOlmaSesi.Play();
+                if (PhotonNetwork.IsMasterClient)
+
+                    Oyuncu_2_saglik -= darbegucu;
+
+                Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
+
+                if (Oyuncu_2_saglik <= 0)
+                {
+
+                    Debug.Log("Oyuncu 2 yenildi");
+
+                }
                 break;
 
         }
 
     }
+    [PunRPC]
+    public void SaglikDoldur(int hangioyuncu)
+    {
+        switch (hangioyuncu)
+        {
+
+            case 1:
+                Oyuncu_1_saglik += 30;
+
+                if (Oyuncu_1_saglik > 100)
+                {
+                    Oyuncu_1_saglik = 100;
+                    Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
+
+                }
+                else
+                {
+                    Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
+                }
+
+
+
+
+
+                break;
+            case 2:
+                Oyuncu_2_saglik += 30;
+
+                if (Oyuncu_2_saglik > 100)
+                {
+                    Oyuncu_2_saglik = 100;
+                    Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
+
+                }
+                else
+                {
+                    Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
+                }
+                break;
+
+        }
+
+    }
+   
 
 
 }

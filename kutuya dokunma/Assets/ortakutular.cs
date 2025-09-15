@@ -10,29 +10,44 @@ public class ortakutular : MonoBehaviour
     public Image healtBar;
 
     GameObject gameKontrol;
+    PhotonView pw;
+   public AudioSource KutuYokOlmaSesi;
 
     private void Start()
     {
-       gameKontrol = GameObject.FindWithTag("GameKontrol");
+        gameKontrol = GameObject.FindWithTag("GameKontrol");
+        pw = GetComponent<PhotonView>();
+        KutuYokOlmaSesi = GetComponent<AudioSource>();
     }
+    [PunRPC]
     public void darbeal(float dargegucu)
     {
-        saglik -= dargegucu;
 
-        healtBar.fillAmount = saglik / 100; // 0.9
-
-        if (saglik <= 0)
+        if (pw.IsMine)
         {
 
-          gameKontrol.GetComponent<GameKontrol>().Ses_ve_Efekt_Olustur(2, gameObject);
-            PhotonNetwork.Destroy(gameObject);
+            saglik -= dargegucu;
+
+            healtBar.fillAmount = saglik / 100; // 0.9
+
+            if (saglik <= 0)
+            {
+
+                // gameKontrol.GetComponent<GameKontrol>().Ses_ve_Efekt_Olustur(2, gameObject);
+
+                PhotonNetwork.Instantiate("Kutu_kirilma_efekt", transform.position, transform.rotation, 0, null);
+                KutuYokOlmaSesi.Play();
+                PhotonNetwork.Destroy(gameObject);
+
+            }
+            else
+            {
+                StartCoroutine(CanvasCikar());
+
+            }
 
         }
-        else
-        {
-            StartCoroutine(CanvasCikar());
 
-        }
 
 
     }

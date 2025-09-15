@@ -25,7 +25,7 @@ public class ortadaki_kutu : MonoBehaviour
         if (saglik<=0)
         {
 
-            gameKontrol.GetComponent<GameKontrol>().Ses_ve_Efekt_Olustur(2,gameObject);
+            //gameKontrol.GetComponent<GameKontrol>().Ses_ve_Efekt_Olustur(2,gameObject);
             Destroy(gameObject);
 
         }else

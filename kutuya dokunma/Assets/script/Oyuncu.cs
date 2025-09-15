@@ -9,115 +9,121 @@ public class Oyuncu : MonoBehaviour
     public GameObject TopCikisnoktasi;
     public ParticleSystem TopAtisEfekt;
     public AudioSource TopAtmaSesi;
-     Image powerbar;
-    float arttir = 0.01f;
-    bool ayari = false;
+    float AtisYonu;
+
+
+    [Header("GÜÇ BARI AYARLARI")]
+    Image PowerBar;
+    float powerSayi;
+    bool sonageldimi = false;
+    Coroutine powerDongu;
+
     PhotonView pw;
-    float atisyonu;
     void Start()
     {
-        powerbar = GameObject.FindWithTag("powerbar").GetComponent<Image>();
+
         pw = GetComponent<PhotonView>();
+
         if (pw.IsMine)
         {
-            //GetComponent<Oyuncu>().enabled = true;
+            PowerBar = GameObject.FindWithTag("PowerBar").GetComponent<Image>();
             if (PhotonNetwork.IsMasterClient)
             {
-                gameObject.tag = "oyuncu1";
+                // gameObject.tag = "Oyuncu_1";
                 transform.position = GameObject.FindWithTag("oyuncuNoktasi1").transform.position;
                 transform.rotation = GameObject.FindWithTag("oyuncuNoktasi1").transform.rotation;
-                atisyonu = 2f;
+                AtisYonu = 2f;
             }
             else
             {
-                gameObject.tag = "oyuncu2";
-
+                //  gameObject.tag = "Oyuncu_2";
                 transform.position = GameObject.FindWithTag("oyuncuNoktasi2").transform.position;
-                transform.rotation = GameObject.FindWithTag("oyuncuNoktasi2").transform.rotation /** Quaternion.Euler(0, 180, 0)*/;
+                transform.rotation = GameObject.FindWithTag("oyuncuNoktasi2").transform.rotation;
+                AtisYonu = -2f;
 
-
-                atisyonu = -2f;
             }
-            Poweroynat();
 
-            InvokeRepeating("oyunbaslasinim",0f,.5f);
         }
+        InvokeRepeating("Oyunbasladimi", 0, .5f);
+
     }
-    public void oyunbaslasinim()
+    public void PowerOynasin()
+    {
+        powerDongu = StartCoroutine(PowerBarCalistir());
+    }
+    public void Oyunbasladimi()
     {
         if (PhotonNetwork.PlayerList.Length == 2)
         {
-            Poweroynat();
-            //if (PhotonNetwork.IsMasterClient)
-            //{
-            //   // GameObject.FindWithTag("oyuncu1").GetComponent<Oyuncu>().enabled = false;
-            //}
-            //else
-            //{
-            //    //GameObject.FindWithTag("oyuncu2").GetComponent<Oyuncu>().enabled = false;
+            if (pw.IsMine)
+            {
+                powerDongu = StartCoroutine(PowerBarCalistir());
+                CancelInvoke("Oyunbasladimi");
 
-            //}
+            }
+
+
         }
-        CancelInvoke("oyunbaslasinim");
-    }
-    private Coroutine powerCoroutine;
-
-    public void Poweroynat()
-    {
-        if (powerCoroutine == null)
-            powerCoroutine = StartCoroutine(Poweryap());
-    }
-
-    public void StopPower()
-    {
-        if (powerCoroutine != null)
+        else
         {
-            StopCoroutine(powerCoroutine);
-            powerCoroutine = null;
+            StopAllCoroutines();
         }
     }
-    IEnumerator Poweryap()
+
+
+    IEnumerator PowerBarCalistir()
     {
+        PowerBar.fillAmount = 0;
+        sonageldimi = false;
+
         while (true)
         {
-            if (powerbar.fillAmount < 1 && !ayari)
+            if (PowerBar.fillAmount < 1 && !sonageldimi)
             {
-                powerbar.fillAmount += arttir;
-                yield return new WaitForSeconds(0.001f);
+                powerSayi = 0.01f;
+                PowerBar.fillAmount += powerSayi;
+                yield return new WaitForSeconds(0.001f * Time.deltaTime);
+
             }
             else
             {
-                ayari = true;
-                powerbar.fillAmount -= arttir;
-                yield return new WaitForSeconds(0.001f);
-                if (powerbar.fillAmount <= 0)
+                sonageldimi = true;
+                powerSayi = 0.01f;
+                PowerBar.fillAmount -= powerSayi;
+                yield return new WaitForSeconds(0.001f * Time.deltaTime);
+
+                if (PowerBar.fillAmount == 0)
                 {
-                    ayari = false;
+                    sonageldimi = false;
+
                 }
+
             }
+
+
         }
+
     }
-        // Update is called once per frame
-        void Update()
-        {
-        if(pw.IsMine)
+    // Update is called once per frame
+    void Update()
+    {
+        if (pw.IsMine)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-              PhotonNetwork.Instantiate("CFX_ElectricityBall", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
+                PhotonNetwork.Instantiate("CFX_ElectricityBall", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
                 TopAtmaSesi.Play();
                 GameObject topobjem = PhotonNetwork.Instantiate("Top", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
-                topobjem.GetComponent<PhotonView>().RPC("tagaktar", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+                topobjem.GetComponent<PhotonView>().RPC("TagAktar", RpcTarget.All, gameObject.tag);
                 Rigidbody2D rg = topobjem.GetComponent<Rigidbody2D>();
-                rg.AddForce(new Vector2(atisyonu, 0f) * powerbar.fillAmount*10, ForceMode2D.Impulse);
-                
+                rg.AddForce(new Vector2(AtisYonu, 0f) * PowerBar.fillAmount * 10, ForceMode2D.Impulse);
 
-               StopPower();
+
+                StopAllCoroutines();
 
             }
-            
+
         }
-            
-        }
-    
+    }
+   
 }
