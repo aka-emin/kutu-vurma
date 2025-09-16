@@ -611,6 +611,8 @@ GameObject:
   - component: {fileID: 116984773}
   - component: {fileID: 116984775}
   - component: {fileID: 116984776}
+  - component: {fileID: 116984778}
+  - component: {fileID: 116984777}
   m_Layer: 0
   m_Name: GameKontrol
   m_TagString: GameKontrol
@@ -742,8 +744,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2cf2bb95d6b9c946a77771eda8c451d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Oyuncu_1_saglik_Bar: {fileID: 0}
-  Oyuncu_2_saglik_Bar: {fileID: 0}
+  Oyuncu_1_saglik_Bar: {fileID: 955740732}
+  Oyuncu_2_saglik_Bar: {fileID: 1447337317}
   noktalar: []
 --- !u!82 &116984776
 AudioSource:
@@ -842,6 +844,45 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &116984777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116984770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &116984778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116984770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 116984777}
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &171604513 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2145986702649923807, guid: b1cf6047050069943a26fbf8b4019597, type: 3}
@@ -3324,7 +3365,7 @@ Transform:
   m_GameObject: {fileID: 734888984}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.64, y: -3.1, z: 0}
+  m_LocalPosition: {x: -0.4, y: -0.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7323,7 +7364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "SaglikCanvas\u0131": {fileID: 464990863}
   healtBar: {fileID: 1827765890}
-  KutuYokOlmaSesi: {fileID: 0}
+  KutuYokOlmaSesi: {fileID: 959211517}
 --- !u!82 &959211517
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7526,7 +7567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &983822421
 Transform:
   m_ObjectHideFlags: 0

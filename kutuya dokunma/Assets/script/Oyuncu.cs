@@ -47,9 +47,13 @@ public class Oyuncu : MonoBehaviour
         InvokeRepeating("Oyunbasladimi", 0, .5f);
 
     }
+    [PunRPC]
     public void PowerOynasin()
     {
-        powerDongu = StartCoroutine(PowerBarCalistir());
+        if (PowerBar != null) // sadece kendi PowerBar’ı olan oyuncuda çalışsın
+        {
+            powerDongu = StartCoroutine(PowerBarCalistir());
+        }
     }
     public void Oyunbasladimi()
     {
@@ -61,12 +65,10 @@ public class Oyuncu : MonoBehaviour
                 CancelInvoke("Oyunbasladimi");
 
             }
-
-
         }
         else
         {
-            StopAllCoroutines();
+            //StopAllCoroutines();
         }
     }
 

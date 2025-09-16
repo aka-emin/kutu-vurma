@@ -4913,7 +4913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e66208dec80c54bb0225226ef481fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  YokOlmaSesi: {fileID: 0}
+  YokOlmaSesi: {fileID: -8343647908208299498}
 --- !u!114 &2876281196010661896
 MonoBehaviour:
   m_ObjectHideFlags: 0

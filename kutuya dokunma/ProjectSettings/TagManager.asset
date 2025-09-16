@@ -15,13 +15,13 @@ TagManager:
   - oyuncubekleniyor
   - Oyuncu1_isim
   - Oyuncu2_isim
-  - powerbar
   - oyuncu1
   - oyuncu2
   - can
   - engel
   - Zemin
   - PowerBar
+  - powerbar
   layers:
   - Default
   - TransparentFX

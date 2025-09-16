@@ -31,84 +31,63 @@ public class GameKontrol : MonoBehaviour
 
     }
     [PunRPC]
-    public void Darbe_vur(int kriter, float darbegucu)
+    public void Darbe_vur(int oyuncuID, float darbegucu)
     {
+        if (oyuncuID == 1)
+            Oyuncu_1_saglik -= darbegucu;
+        else if (oyuncuID == 2)
+            Oyuncu_2_saglik -= darbegucu;
 
-        switch (kriter)
-        {
-
-            case 1:
-                if (PhotonNetwork.IsMasterClient)
-                    Oyuncu_1_saglik -= darbegucu;
-
-                Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
-
-                if (Oyuncu_1_saglik <= 0)
-                {
-
-                    Debug.Log("Oyuncu 1 yenildi");
-
-                }
-
-                break;
-            case 2:
-                if (PhotonNetwork.IsMasterClient)
-
-                    Oyuncu_2_saglik -= darbegucu;
-
-                Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
-
-                if (Oyuncu_2_saglik <= 0)
-                {
-
-                    Debug.Log("Oyuncu 2 yenildi");
-
-                }
-                break;
-
-        }
-
+        // Herkes can deðerini günceller
+        UpdateUI();
     }
+
+    void UpdateUI()
+    {
+        // Sadece kendi can barýný güncelle
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100f;
+            Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100f;
+        }
+        else
+        {
+            Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100f;
+            Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100f;
+        }
+    }
+
+
     [PunRPC]
     public void SaglikDoldur(int hangioyuncu)
     {
         switch (hangioyuncu)
         {
-
-            case 1:
+           case 1:
                 Oyuncu_1_saglik += 30;
 
                 if (Oyuncu_1_saglik > 100)
                 {
                     Oyuncu_1_saglik = 100;
                     Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
-
                 }
                 else
                 {
                     Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100;
                 }
-
-
-
-
-
                 break;
             case 2:
                 Oyuncu_2_saglik += 30;
-
                 if (Oyuncu_2_saglik > 100)
                 {
                     Oyuncu_2_saglik = 100;
                     Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
-
                 }
                 else
                 {
                     Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100;
                 }
                 break;
-
         }
 
     }

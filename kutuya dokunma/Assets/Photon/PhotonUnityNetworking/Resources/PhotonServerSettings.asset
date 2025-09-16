@@ -44,6 +44,8 @@ MonoBehaviour:
   - Darbe_vur
   - darbeal
   - SaglikDoldur
+  - PowerOynasin
+  - SaglikGuncelle
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
