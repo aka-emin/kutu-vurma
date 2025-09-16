@@ -10,7 +10,7 @@ public class Oyuncu : MonoBehaviour
     public ParticleSystem TopAtisEfekt;
     public AudioSource TopAtmaSesi;
     float AtisYonu;
-
+    public bool atesetme=true;
 
     [Header("GÜÇ BARI AYARLARI")]
     Image PowerBar;
@@ -72,7 +72,11 @@ public class Oyuncu : MonoBehaviour
         }
     }
 
-
+//    [PunRPC]
+//public void SiraDegistir()
+//    {
+//        atesetme=!atesetme;
+//    }
     IEnumerator PowerBarCalistir()
     {
         PowerBar.fillAmount = 0;
@@ -111,7 +115,7 @@ public class Oyuncu : MonoBehaviour
     {
         if (pw.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space)&&atesetme)
             {
                 PhotonNetwork.Instantiate("CFX_ElectricityBall", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
                 TopAtmaSesi.Play();
@@ -119,12 +123,15 @@ public class Oyuncu : MonoBehaviour
                 topobjem.GetComponent<PhotonView>().RPC("TagAktar", RpcTarget.All, gameObject.tag);
                 Rigidbody2D rg = topobjem.GetComponent<Rigidbody2D>();
                 rg.AddForce(new Vector2(AtisYonu, 0f) * PowerBar.fillAmount * 10, ForceMode2D.Impulse);
-
+                //SiraDegistir();
 
                 StopAllCoroutines();
 
             }
-
+            //if (Input.GetKeyDown(KeyCode.D))
+            //{
+            //    SiraDegistir();
+            //}
         }
     }
    
