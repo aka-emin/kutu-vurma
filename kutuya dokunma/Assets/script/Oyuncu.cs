@@ -47,7 +47,6 @@ public class Oyuncu : MonoBehaviour
         InvokeRepeating("Oyunbasladimi", 0, .5f);
 
     }
-    [PunRPC]
     public void PowerOynasin()
     {
         if (PowerBar != null) // sadece kendi PowerBar’ı olan oyuncuda çalışsın
@@ -68,7 +67,7 @@ public class Oyuncu : MonoBehaviour
         }
         else
         {
-            //StopAllCoroutines();
+            StopAllCoroutines();
         }
     }
 
@@ -125,7 +124,7 @@ public class Oyuncu : MonoBehaviour
                 rg.AddForce(new Vector2(AtisYonu, 0f) * PowerBar.fillAmount * 10, ForceMode2D.Impulse);
                 //SiraDegistir();
 
-                StopAllCoroutines();
+                StopCoroutine(powerDongu);
 
             }
             //if (Input.GetKeyDown(KeyCode.D))

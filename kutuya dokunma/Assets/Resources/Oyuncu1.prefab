@@ -349,6 +349,7 @@ MonoBehaviour:
   TopCikisnoktasi: {fileID: 8921749055796784552}
   TopAtisEfekt: {fileID: 19800000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
   TopAtmaSesi: {fileID: 7516661221743010240}
+  atesetme: 1
 --- !u!114 &2038134448230704659
 MonoBehaviour:
   m_ObjectHideFlags: 0

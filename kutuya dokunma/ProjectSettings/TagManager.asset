@@ -22,6 +22,7 @@ TagManager:
   - Zemin
   - PowerBar
   - powerbar
+  - top
   layers:
   - Default
   - TransparentFX

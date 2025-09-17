@@ -19,7 +19,9 @@ MonoBehaviour:
   m_PlatformBuildProfile:
     rid: 2846469788318564426
   m_OverrideGlobalSceneList: 0
-  m_Scenes: []
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/Scenes/Anaekran.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

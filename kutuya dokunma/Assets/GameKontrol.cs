@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,12 +24,34 @@ public class GameKontrol : MonoBehaviour
         basladikmi = false;
         limit = 4;
         beklemesuresi = 5f;
+        Basla();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+    IEnumerator OlusturmayaBasla()
+    {
+        olusturmaSayisi = 0;
+
+        while (true && basladikmi)
+        {
+            if (limit == olusturmaSayisi)
+                basladikmi = false;
+
+            yield return new WaitForSeconds(15f);
+            int olusandeger = Random.Range(0, 6);
+            PhotonNetwork.Instantiate("Odul", noktalar[olusandeger].transform.position, noktalar[olusandeger].transform.rotation, 0, null);
+            olusturmaSayisi++;
+        }   }
+    [PunRPC]
+    public void Basla()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            basladikmi = true;
+        StartCoroutine(OlusturmayaBasla());
     }
     [PunRPC]
     public void Darbe_vur(int oyuncuID, float darbegucu)

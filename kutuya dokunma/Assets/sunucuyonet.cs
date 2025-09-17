@@ -48,8 +48,8 @@ PhotonNetwork.JoinRandomRoom();
         }
         else
         {
-            objem.gameObject.tag = "oyuncu2";
-
+            objem.gameObject.tag = "oyuncu2";     
+                GameObject.FindWithTag("GameKontrol").gameObject.GetComponent<PhotonView>().RPC("Basla", RpcTarget.All);          
         }
     }
     public override void OnLeftRoom()

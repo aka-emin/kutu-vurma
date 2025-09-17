@@ -45,7 +45,8 @@ public class Top : MonoBehaviour
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
             YokOlmaSesi.Play();
             //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All); if (pw.IsMine)
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
+            if (pw.IsMine)
            PhotonNetwork.Destroy(gameObject);
 
             // GetComponent<CircleCollider2D>().isTrigger = false;
@@ -54,7 +55,7 @@ public class Top : MonoBehaviour
         if (collision.gameObject.CompareTag("Zemin"))
         {
             //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All);
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
             YokOlmaSesi.Play();
             if (pw.IsMine)
@@ -65,8 +66,7 @@ public class Top : MonoBehaviour
         if (collision.gameObject.CompareTag("engel"))
         {
 
-            Oyuncu.GetComponent<PhotonView>().RPC("SaglikDoldur", RpcTarget.All);
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All);
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
 
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
             YokOlmaSesi.Play();
@@ -79,7 +79,7 @@ public class Top : MonoBehaviour
             gameKontrol.GetComponent<PhotonView>().RPC("SaglikDoldur", RpcTarget.All, benkimim);
             PhotonNetwork.Destroy(collision.transform.gameObject);
             //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All);
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
 
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
             YokOlmaSesi.Play();
@@ -93,7 +93,7 @@ public class Top : MonoBehaviour
             gameKontrol.GetComponent<PhotonView>().RPC("Darbe_vur", RpcTarget.All, 2, darbegucu);
             Debug.Log("oyuncu 2 carpdý");
             //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All);
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
             if (pw.IsMine)
                 PhotonNetwork.Destroy(gameObject);
             //GetComponent<CircleCollider2D>().isTrigger = false;
@@ -108,12 +108,13 @@ public class Top : MonoBehaviour
             gameKontrol.GetComponent<PhotonView>().RPC("Darbe_vur", RpcTarget.All, 1, darbegucu);
 
             //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            Oyuncu.GetComponent<PhotonView>().RPC("PowerOynasin", RpcTarget.All);
+            Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
             if (pw.IsMine)
                 PhotonNetwork.Destroy(gameObject);
             // GetComponent<CircleCollider2D>().isTrigger = false;
 
         }
+        
     }
 
 
