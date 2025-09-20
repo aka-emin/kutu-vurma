@@ -11,6 +11,8 @@ public class GameKontrol : MonoBehaviour
     public Image Oyuncu_2_saglik_Bar;
     float Oyuncu_2_saglik = 100;
     PhotonView pw;
+    public GameObject zafer;
+    public GameObject yenilgi;
 
     bool basladikmi;
     int limit;
@@ -78,9 +80,34 @@ public class GameKontrol : MonoBehaviour
             Oyuncu_1_saglik_Bar.fillAmount = Oyuncu_1_saglik / 100f;
             Oyuncu_2_saglik_Bar.fillAmount = Oyuncu_2_saglik / 100f;
         }
+        if (Oyuncu_1_saglik <= 0)
+        {
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 1) // ben oyuncu 1'im
+                yenilgi.SetActive(true);
+            else // ben oyuncu 2'yim
+                zafer.SetActive(true);
+
+            Time.timeScale = 0f;
+        }
+
+        // Oyuncu 2 öldüyse
+        if (Oyuncu_2_saglik <= 0)
+        {
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2) // ben oyuncu 2'yim
+                yenilgi.SetActive(true);
+            else // ben oyuncu 1'im
+                zafer.SetActive(true);
+
+            Time.timeScale = 0f;
+        }
     }
 
+    public void CikisYap()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel(0);
 
+    }
     [PunRPC]
     public void SaglikDoldur(int hangioyuncu)
     {

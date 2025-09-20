@@ -123,9 +123,10 @@ public class Oyuncu : MonoBehaviour
                 Rigidbody2D rg = topobjem.GetComponent<Rigidbody2D>();
                 rg.AddForce(new Vector2(AtisYonu, 0f) * PowerBar.fillAmount * 10, ForceMode2D.Impulse);
                 //SiraDegistir();
-
-                StopCoroutine(powerDongu);
-
+                if (powerDongu != null)
+                {
+                    StopCoroutine(powerDongu);
+                }
             }
             //if (Input.GetKeyDown(KeyCode.D))
             //{
