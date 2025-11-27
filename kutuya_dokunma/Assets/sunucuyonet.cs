@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
 
 
 public class sunucuyonet : MonoBehaviourPunCallbacks
@@ -32,8 +33,9 @@ PhotonNetwork.JoinRandomRoom();
     public override void OnJoinedLobby()
     {
         Debug.Log("lobiye baglandý");
-        
-        
+        GameObject isik= GameObject.FindWithTag("sunucuisigi");
+        isik.GetComponent<RawImage>().color=Color.green;
+
     }
     public override void OnJoinedRoom()
     {

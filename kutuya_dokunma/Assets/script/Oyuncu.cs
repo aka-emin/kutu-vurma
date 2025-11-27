@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using Photon.Pun;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +11,7 @@ public class Oyuncu : MonoBehaviour
     public AudioSource TopAtmaSesi;
     float AtisYonu;
     public bool atesetme=true;
-
+ 
     [Header("GÜÇ BARI AYARLARI")]
     Image PowerBar;
     float powerSayi;
@@ -45,15 +45,31 @@ public class Oyuncu : MonoBehaviour
 
         }
         InvokeRepeating("Oyunbasladimi", 0, .5f);
-
+       
     }
+
+    [PunRPC]
     public void PowerOynasin()
     {
-        if (PowerBar != null) // sadece kendi PowerBar’ı olan oyuncuda çalışsın
+        // Bu metod RPC ile çağrıldığında sadece ilgili oyuncunun client'ında çalışsın
+        if (pw != null && pw.IsMine)
         {
-            powerDongu = StartCoroutine(PowerBarCalistir());
+            if (PowerBar != null) // sadece kendi PowerBar’ı olan oyuncuda çalışsın
+            {
+                powerDongu = StartCoroutine(PowerBarCalistir());
+            }
+            // Top çarptıktan sonra tekrar ateş edilebilsin
+            atesetme = true;
         }
     }
+
+    // (opsiyonel) ayrı RPC isterseniz bu metodu da kullanabilirsiniz
+    [PunRPC]
+    public void SetAtesetmeTrue()
+    {
+        if (pw != null && pw.IsMine) atesetme = true;
+    }
+
     public void Oyunbasladimi()
     {
         if (PhotonNetwork.PlayerList.Length == 2)
@@ -71,11 +87,6 @@ public class Oyuncu : MonoBehaviour
         }
     }
 
-//    [PunRPC]
-//public void SiraDegistir()
-//    {
-//        atesetme=!atesetme;
-//    }
     IEnumerator PowerBarCalistir()
     {
         PowerBar.fillAmount = 0;
@@ -114,8 +125,11 @@ public class Oyuncu : MonoBehaviour
     {
         if (pw.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Space)&&atesetme)
+            //if (PhotonNetwork.PlayerList.Length == 2)
+            //{
+                if (Input.GetKeyDown(KeyCode.Space)&&atesetme)
             {
+                atesetme = false;
                 PhotonNetwork.Instantiate("CFX_ElectricityBall", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
                 TopAtmaSesi.Play();
                 GameObject topobjem = PhotonNetwork.Instantiate("Top", TopCikisnoktasi.transform.position, TopCikisnoktasi.transform.rotation);
