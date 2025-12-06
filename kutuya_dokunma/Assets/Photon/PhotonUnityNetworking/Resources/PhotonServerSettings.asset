@@ -49,6 +49,11 @@ MonoBehaviour:
   - SiraDegistir
   - Basla
   - SetAtesetmeTrue
+  - OyunDurumuGuncelle
+  - ShowDefeat
+  - ShowVictory
+  - RPC_ShowHealthCanvas
+  - ClearActiveTop
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

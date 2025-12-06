@@ -6,125 +6,120 @@ public class Top : MonoBehaviour
     float darbegucu;
     int benkimim;
 
-
     GameObject gameKontrol;
+    PhotonView gameKontrolPV;
     GameObject Oyuncu;
     PhotonView pw;
-   public AudioSource YokOlmaSesi;
 
+    // Yeni: topun sahibi oyuncunun view id'si (kesin eþleme için)
+    int ownerPlayerViewId = 0;
+    PhotonView ownerPlayerPV;
+
+    public AudioSource YokOlmaSesi;
 
     void Start()
     {
         darbegucu = 20;
         gameKontrol = GameObject.FindWithTag("GameKontrol");
+        if (gameKontrol != null) gameKontrolPV = gameKontrol.GetComponent<PhotonView>();
         pw = GetComponent<PhotonView>();
         YokOlmaSesi = GetComponent<AudioSource>();
     }
 
+    // TagAktar artýk ownerViewId paramresi de alýr
     [PunRPC]
-    public void TagAktar(string gelentag)
+    public void TagAktar(string gelentag, int ownerViewId)
     {
         Oyuncu = GameObject.FindWithTag(gelentag);
+        benkimim = (gelentag == "oyuncu1") ? 1 : 2;
 
-        if (gelentag == "oyuncu1")
-            benkimim = 1;
-        else
-            benkimim = 2;
+        ownerPlayerViewId = ownerViewId;
+        // ownerPlayerPV (yerelde) bulunursa cachele
+        ownerPlayerPV = PhotonView.Find(ownerPlayerViewId);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-
+        // Ortadaki kutu
         if (collision.gameObject.CompareTag("Ortadaki_kutular"))
         {
             collision.gameObject.GetComponent<PhotonView>().RPC("darbeal", RpcTarget.All, darbegucu);
-
-            // collision.gameObject.GetComponent<ortadaki_kutu>().darbeal(darbegucu);
-            PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
-            YokOlmaSesi.Play();
-            //Oyuncu.GetComponent<Oyuncu>().PowerOynasin();
-            // PowerOynasin'ý sadece ilgili oyuncunun client'ýnda çalýþtýr
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-            if (pw.IsMine)
-               PhotonNetwork.Destroy(gameObject);
-
-            // GetComponent<CircleCollider2D>().isTrigger = false;
-
+            PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation);
+            if (YokOlmaSesi != null) YokOlmaSesi.Play();
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
+
+        // Zemin
         if (collision.gameObject.CompareTag("Zemin"))
         {
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
-            YokOlmaSesi.Play();
-            if (pw.IsMine)
-                PhotonNetwork.Destroy(gameObject);
-
+            if (YokOlmaSesi != null) YokOlmaSesi.Play();
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
 
+        // Engel
         if (collision.gameObject.CompareTag("engel"))
         {
-
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
-            YokOlmaSesi.Play();
-            if (pw.IsMine)
-                PhotonNetwork.Destroy(gameObject);
-
+            if (YokOlmaSesi != null) YokOlmaSesi.Play();
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
+
+        // Can
         if (collision.gameObject.CompareTag("can"))
         {
-            gameKontrol.GetComponent<PhotonView>().RPC("SaglikDoldur", RpcTarget.All, benkimim);
+            if (gameKontrolPV != null) gameKontrolPV.RPC("SaglikDoldur", RpcTarget.All, benkimim);
             PhotonNetwork.Destroy(collision.transform.gameObject);
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
-            YokOlmaSesi.Play();
-            if (pw.IsMine)
-                PhotonNetwork.Destroy(gameObject);
-
+            if (YokOlmaSesi != null) YokOlmaSesi.Play();
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
+
+        // Oyuncu çarpmasý (kule vb.)
         if (collision.gameObject.CompareTag("oyuncu2") || collision.gameObject.CompareTag("Oyuncu_2_Kule"))
         {
             PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
-            gameKontrol.GetComponent<PhotonView>().RPC("Darbe_vur", RpcTarget.All, 2, darbegucu);
-            Debug.Log("oyuncu 2 carpdý");
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-            if (pw.IsMine)
-                PhotonNetwork.Destroy(gameObject);
-            //GetComponent<CircleCollider2D>().isTrigger = false;
-
+            if (gameKontrolPV != null) gameKontrolPV.RPC("Darbe_vur", RpcTarget.All, 2, darbegucu);
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
         if (collision.gameObject.CompareTag("oyuncu1") || collision.gameObject.CompareTag("Oyuncu_1_Kule"))
         {
-            Debug.Log("oyuncu 1 carpdý");
-
-
-            // gameKontrol.GetComponent<GameKontrol>().Ses_ve_Efekt_Olustur(1, collision.gameObject);
-            gameKontrol.GetComponent<PhotonView>().RPC("Darbe_vur", RpcTarget.All, 1, darbegucu);
-
-            var playerPv = Oyuncu.GetComponent<PhotonView>();
-            playerPv.RPC("PowerOynasin", playerPv.Owner);
-            if (pw.IsMine)
-                PhotonNetwork.Destroy(gameObject);
-            // GetComponent<CircleCollider2D>().isTrigger = false;
-
+            PhotonNetwork.Instantiate("Duman_puf_Carpma_efekti", transform.position, transform.rotation, 0, null);
+            if (gameKontrolPV != null) gameKontrolPV.RPC("Darbe_vur", RpcTarget.All, 1, darbegucu);
+            NotifyOwnerTopCleared();
+            if (pw.IsMine) PhotonNetwork.Destroy(gameObject);
+            return;
         }
-        
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    // Sahip oyuncuya topun temizlendiðini bildir (owner'a RPC)
+    void NotifyOwnerTopCleared()
     {
+        // ownerPlayerPV cache'lenmiþse doðrudan kullan
+        if (ownerPlayerPV == null && ownerPlayerViewId != 0)
+            ownerPlayerPV = PhotonView.Find(ownerPlayerViewId);
 
+        if (ownerPlayerPV != null)
+        {
+            // owner client üzerinde ClearActiveTop çaðrýlýr
+            ownerPlayerPV.RPC("ClearActiveTop", ownerPlayerPV.Owner, pw.ViewID);
+        }
+        else if (Oyuncu != null)
+        {
+            // fallback: tag ile bul ve RPC gönder (daha az güvenli)
+            var fallbackPV = Oyuncu.GetComponent<PhotonView>();
+            if (fallbackPV != null)
+                fallbackPV.RPC("ClearActiveTop", fallbackPV.Owner, pw.ViewID);
+        }
     }
 }
