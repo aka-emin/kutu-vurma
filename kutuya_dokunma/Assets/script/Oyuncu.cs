@@ -15,10 +15,9 @@ public class Oyuncu : MonoBehaviour
 
     [Header("GÜÇ BARI AYARLARI")]
     Image PowerBar;
-    float powerSayi;
     bool sonageldimi = false;
     Coroutine powerDongu;
-
+    
     PhotonView pw;
 
     // Yeni: aktif topu takip etmek için view id
@@ -135,7 +134,12 @@ public class Oyuncu : MonoBehaviour
 
     void Update()
     {
-        if (!pw.IsMine || PhotonNetwork.PlayerList.Length == 1) return;
+        if (!pw.IsMine || PhotonNetwork.PlayerList.Length == 1)
+        {if(!bot.sayim)
+                return;
+        }
+
+        
 
         bool fireInput = false;
         if (Input.GetKeyDown(KeyCode.Space) && atesetme) fireInput = true;

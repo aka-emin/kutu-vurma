@@ -32,12 +32,6 @@ public class GameKontrol : MonoBehaviourPunCallbacks
         beklemesuresi = 5f;
         Basla();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     IEnumerator OlusturmayaBasla()
     {
         olusturmaSayisi = 0;
