@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class sunucuyonet : MonoBehaviourPunCallbacks
 {
     public GameObject suucuhatapaneli;
-    bool baglantiBasarili;
-    public Button playbutton;
+  public static  bool baglantiBasarili;
     public static sunucuyonet instance;
+    
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
@@ -83,7 +83,7 @@ public class sunucuyonet : MonoBehaviourPunCallbacks
    
     public override void OnJoinedLobby()
     {
-        playbutton.interactable = true;
+        
         Debug.Log("lobiye baglandı");
         GameObject isik = GameObject.FindWithTag("sunucuisigi");
         if (isik != null)
